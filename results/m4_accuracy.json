@@ -1,0 +1,22 @@
+{
+  "ref_fp32": {
+    "top1": 81.26999735832214,
+    "top5": 95.44,
+    "n": 10000
+  },
+  "ref_fp16": {
+    "top1": 81.26999735832214,
+    "top5": 95.44,
+    "n": 10000
+  },
+  "fused_fp16": {
+    "top1": 81.26999735832214,
+    "top5": 95.44,
+    "n": 10000
+  },
+  "delta_top1_fused_vs_ref_fp16": 0.0,
+  "delta_top1_fused_vs_ref_fp32": 0.0,
+  "pred_agreement_fused_vs_ref_fp16": 0.9998999834060669,
+  "pred_agreement_fused_vs_ref_fp32": 1.0,
+  "pred_agreement_ref_fp16_vs_ref_fp32": 0.9998999834060669
+}

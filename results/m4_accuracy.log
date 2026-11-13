@@ -1,0 +1,12 @@
+E:\NCA\e2e.py:64: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:212.)
+  xb = torch.from_numpy(np.ascontiguousarray(x8[i:i + bs])).cuda().permute(0, 3, 1, 2).float().div(255)
+ref_fp32 top1 81.27  top5 95.44
+ref_fp16 top1 81.27  top5 95.44
+fused_fp16 top1 81.27  top5 95.44
+{
+ "delta_top1_fused_vs_ref_fp16": 0.0,
+ "delta_top1_fused_vs_ref_fp32": 0.0,
+ "pred_agreement_fused_vs_ref_fp16": 0.9998999834060669,
+ "pred_agreement_fused_vs_ref_fp32": 1.0,
+ "pred_agreement_ref_fp16_vs_ref_fp32": 0.9998999834060669
+}
