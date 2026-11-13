@@ -1,0 +1,166 @@
+batches [1, 16, 64, 2048]
+launch 0
+  fp32 B=    1  median    1.471 ms  IQR 0.089  1471.0 us/img
+  fp32 B=   16  median    2.508 ms  IQR 0.022  156.8 us/img
+  fp32 B=   64  median   16.392 ms  IQR 0.759  256.1 us/img
+  fp32 B= 2048  median  334.673 ms  IQR 5.865  163.4 us/img
+  fp16 B=    1  median    1.533 ms  IQR 0.032  1532.8 us/img
+  fp16 B=   16  median    1.466 ms  IQR 0.033  91.6 us/img
+  fp16 B=   64  median    4.571 ms  IQR 0.028  71.4 us/img
+  fp16 B= 2048  median  249.177 ms  IQR 0.025  121.7 us/img
+launch 1
+  fp32 B=    1  median    1.338 ms  IQR 0.040  1338.4 us/img
+  fp32 B=   16  median    2.497 ms  IQR 0.018  156.1 us/img
+  fp32 B=   64  median   12.588 ms  IQR 3.155  196.7 us/img
+  fp32 B= 2048  median  334.508 ms  IQR 5.492  163.3 us/img
+  fp16 B=    1  median    1.581 ms  IQR 0.065  1581.4 us/img
+  fp16 B=   16  median    1.511 ms  IQR 0.033  94.4 us/img
+  fp16 B=   64  median    4.579 ms  IQR 0.025  71.5 us/img
+  fp16 B= 2048  median  249.157 ms  IQR 0.024  121.7 us/img
+launch 2
+  fp32 B=    1  median    1.341 ms  IQR 1.403  1341.4 us/img
+  fp32 B=   16  median    2.495 ms  IQR 0.018  155.9 us/img
+  fp32 B=   64  median   12.423 ms  IQR 0.222  194.1 us/img
+  fp32 B= 2048  median  336.415 ms  IQR 5.958  164.3 us/img
+  fp16 B=    1  median    1.676 ms  IQR 0.289  1675.9 us/img
+  fp16 B=   16  median    1.527 ms  IQR 0.058  95.5 us/img
+  fp16 B=   64  median    4.565 ms  IQR 0.017  71.3 us/img
+  fp16 B= 2048  median  249.268 ms  IQR 0.020  121.7 us/img
+[
+ {
+  "dtype": "fp32",
+  "batch": 1,
+  "median_of_medians_ms": 1.341439962387085,
+  "medians_ms_per_launch": [
+   1.4709759950637817,
+   1.3383680582046509,
+   1.341439962387085
+  ],
+  "iqr_ms_per_launch": [
+   0.08934399485588074,
+   0.04019194841384888,
+   1.4028799533843994
+  ],
+  "us_per_image": 1341.439962387085,
+  "kernels_per_block": 49
+ },
+ {
+  "dtype": "fp32",
+  "batch": 16,
+  "median_of_medians_ms": 2.496847987174988,
+  "medians_ms_per_launch": [
+   2.5081920623779297,
+   2.496847987174988,
+   2.4945759773254395
+  ],
+  "iqr_ms_per_launch": [
+   0.021623969078063965,
+   0.018199920654296875,
+   0.018287956714630127
+  ],
+  "us_per_image": 156.05299919843674,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp32",
+  "batch": 64,
+  "median_of_medians_ms": 12.588047981262207,
+  "medians_ms_per_launch": [
+   16.391663551330566,
+   12.588047981262207,
+   12.423359870910645
+  ],
+  "iqr_ms_per_launch": [
+   0.7585039138793945,
+   3.1552560329437256,
+   0.2220315933227539
+  ],
+  "us_per_image": 196.68824970722198,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp32",
+  "batch": 2048,
+  "median_of_medians_ms": 334.6734619140625,
+  "medians_ms_per_launch": [
+   334.6734619140625,
+   334.5076599121094,
+   336.4151916503906
+  ],
+  "iqr_ms_per_launch": [
+   5.864715576171875,
+   5.49163818359375,
+   5.9584503173828125
+  ],
+  "us_per_image": 163.41477632522583,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp16",
+  "batch": 1,
+  "median_of_medians_ms": 1.5813760161399841,
+  "medians_ms_per_launch": [
+   1.532800018787384,
+   1.5813760161399841,
+   1.6758719682693481
+  ],
+  "iqr_ms_per_launch": [
+   0.032255977392196655,
+   0.06486406922340393,
+   0.2889760434627533
+  ],
+  "us_per_image": 1581.3760161399841,
+  "kernels_per_block": 42
+ },
+ {
+  "dtype": "fp16",
+  "batch": 16,
+  "median_of_medians_ms": 1.5108799934387207,
+  "medians_ms_per_launch": [
+   1.4662240147590637,
+   1.5108799934387207,
+   1.527296006679535
+  ],
+  "iqr_ms_per_launch": [
+   0.0329039990901947,
+   0.03313598036766052,
+   0.058279961347579956
+  ],
+  "us_per_image": 94.42999958992004,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp16",
+  "batch": 64,
+  "median_of_medians_ms": 4.5714240074157715,
+  "medians_ms_per_launch": [
+   4.5714240074157715,
+   4.578511953353882,
+   4.564784049987793
+  ],
+  "iqr_ms_per_launch": [
+   0.027912020683288574,
+   0.02480006217956543,
+   0.017264366149902344
+  ],
+  "us_per_image": 71.42850011587143,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp16",
+  "batch": 2048,
+  "median_of_medians_ms": 249.17715454101562,
+  "medians_ms_per_launch": [
+   249.17715454101562,
+   249.15650939941406,
+   249.26780700683594
+  ],
+  "iqr_ms_per_launch": [
+   0.025043487548828125,
+   0.02437591552734375,
+   0.020374298095703125
+  ],
+  "us_per_image": 121.66853249073029,
+  "kernels_per_block": null
+ }
+]
