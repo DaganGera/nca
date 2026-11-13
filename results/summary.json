@@ -1,0 +1,16 @@
+{
+  "dram_mb_per_image_before": 10.887228,
+  "dram_mb_per_image_after": 0.808826,
+  "throughput_before": 1588.5724998792748,
+  "throughput_after": 2201.401861739782,
+  "parity_point": "none: with the efficiencies measured for these kernels (calibrated at 224 px), per-step-fused NCA never matches flash-style global attention for 224-1024 px over 5 hardware generations (closest model ratio 1.15x; measured on this GPU: none up to 1024 px). Ideal-roofline model (every kernel at 100% of its roof): gen+0: 848 px, gen+1: 848 px, gen+2: 848 px, gen+3: none, gen+4: none, gen+5: none.",
+  "gpu": "NVIDIA GeForce RTX 4060 (8187 MiB, sm_89, 24 SMs, L2 24 MiB), driver 610.88",
+  "software": {
+    "python": "3.11.5",
+    "torch": "2.9.1+cu128",
+    "cuda_runtime": "12.8",
+    "triton_windows": "3.5.1",
+    "nsight_compute": "Version 2024.1.0.0 (build 33681293) (public-release)",
+    "os": "Windows-10-10.0.26200-SP0"
+  }
+}
