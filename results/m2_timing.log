@@ -1,0 +1,86 @@
+batches [1, 16, 64, 2048]
+launch 0
+  fp16 B=    1  median    0.335 ms  IQR 0.009  334.8 us/img
+  fp16 B=   16  median    0.730 ms  IQR 0.004  45.6 us/img
+  fp16 B=   64  median    2.588 ms  IQR 0.006  40.4 us/img
+  fp16 B= 2048  median   86.329 ms  IQR 1.049  42.2 us/img
+launch 1
+  fp16 B=    1  median    0.335 ms  IQR 0.014  334.8 us/img
+  fp16 B=   16  median    0.730 ms  IQR 0.004  45.6 us/img
+  fp16 B=   64  median    2.592 ms  IQR 0.065  40.5 us/img
+  fp16 B= 2048  median   86.398 ms  IQR 0.898  42.2 us/img
+launch 2
+  fp16 B=    1  median    0.333 ms  IQR 0.009  333.3 us/img
+  fp16 B=   16  median    0.729 ms  IQR 0.004  45.6 us/img
+  fp16 B=   64  median    2.596 ms  IQR 0.043  40.6 us/img
+  fp16 B= 2048  median   86.467 ms  IQR 0.746  42.2 us/img
+[
+ {
+  "dtype": "fp16",
+  "batch": 1,
+  "median_of_medians_ms": 0.33484798669815063,
+  "medians_ms_per_launch": [
+   0.33484798669815063,
+   0.33484798669815063,
+   0.3333120048046112
+  ],
+  "iqr_ms_per_launch": [
+   0.009216010570526123,
+   0.014199994504451752,
+   0.00895998626947403
+  ],
+  "us_per_image": 334.84798669815063,
+  "kernels_per_block": 6
+ },
+ {
+  "dtype": "fp16",
+  "batch": 16,
+  "median_of_medians_ms": 0.7295680046081543,
+  "medians_ms_per_launch": [
+   0.7295680046081543,
+   0.7295680046081543,
+   0.7290880084037781
+  ],
+  "iqr_ms_per_launch": [
+   0.004287987947463989,
+   0.004303976893424988,
+   0.0038879960775375366
+  ],
+  "us_per_image": 45.598000288009644,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp16",
+  "batch": 64,
+  "median_of_medians_ms": 2.5924479961395264,
+  "medians_ms_per_launch": [
+   2.5884000062942505,
+   2.5924479961395264,
+   2.59552001953125
+  ],
+  "iqr_ms_per_launch": [
+   0.005855977535247803,
+   0.0650479793548584,
+   0.04288792610168457
+  ],
+  "us_per_image": 40.5069999396801,
+  "kernels_per_block": null
+ },
+ {
+  "dtype": "fp16",
+  "batch": 2048,
+  "median_of_medians_ms": 86.39848327636719,
+  "medians_ms_per_launch": [
+   86.32857513427734,
+   86.39848327636719,
+   86.46710205078125
+  ],
+  "iqr_ms_per_launch": [
+   1.0488395690917969,
+   0.8982887268066406,
+   0.7461357116699219
+  ],
+  "us_per_image": 42.186759412288666,
+  "kernels_per_block": null
+ }
+]

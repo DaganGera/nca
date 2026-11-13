@@ -1,0 +1,443 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4060",
+  "L2_bytes": 25165824,
+  "smem_optin_bytes": 101376,
+  "sms": 24,
+  "batches": [
+    1,
+    16,
+    64,
+    2048
+  ],
+  "summary": [
+    {
+      "dtype": "fp16",
+      "batch": 1,
+      "median_of_medians_ms": 0.33484798669815063,
+      "medians_ms_per_launch": [
+        0.33484798669815063,
+        0.33484798669815063,
+        0.3333120048046112
+      ],
+      "iqr_ms_per_launch": [
+        0.009216010570526123,
+        0.014199994504451752,
+        0.00895998626947403
+      ],
+      "us_per_image": 334.84798669815063,
+      "kernels_per_block": 6
+    },
+    {
+      "dtype": "fp16",
+      "batch": 16,
+      "median_of_medians_ms": 0.7295680046081543,
+      "medians_ms_per_launch": [
+        0.7295680046081543,
+        0.7295680046081543,
+        0.7290880084037781
+      ],
+      "iqr_ms_per_launch": [
+        0.004287987947463989,
+        0.004303976893424988,
+        0.0038879960775375366
+      ],
+      "us_per_image": 45.598000288009644,
+      "kernels_per_block": null
+    },
+    {
+      "dtype": "fp16",
+      "batch": 64,
+      "median_of_medians_ms": 2.5924479961395264,
+      "medians_ms_per_launch": [
+        2.5884000062942505,
+        2.5924479961395264,
+        2.59552001953125
+      ],
+      "iqr_ms_per_launch": [
+        0.005855977535247803,
+        0.0650479793548584,
+        0.04288792610168457
+      ],
+      "us_per_image": 40.5069999396801,
+      "kernels_per_block": null
+    },
+    {
+      "dtype": "fp16",
+      "batch": 2048,
+      "median_of_medians_ms": 86.39848327636719,
+      "medians_ms_per_launch": [
+        86.32857513427734,
+        86.39848327636719,
+        86.46710205078125
+      ],
+      "iqr_ms_per_launch": [
+        1.0488395690917969,
+        0.8982887268066406,
+        0.7461357116699219
+      ],
+      "us_per_image": 42.186759412288666,
+      "kernels_per_block": null
+    }
+  ],
+  "launches": [
+    [
+      {
+        "median_ms": 0.33484798669815063,
+        "q1_ms": 0.3317759931087494,
+        "q3_ms": 0.3409920036792755,
+        "iqr_ms": 0.009216010570526123,
+        "min_ms": 0.3256320059299469,
+        "max_ms": 0.41471999883651733,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2505,
+          "mem_clock_mhz": 8251,
+          "temp_c": 49,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2790,
+          "mem_clock_mhz": 8251,
+          "temp_c": 52,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 1,
+        "us_per_image": 334.84798669815063,
+        "kernels_per_block": 6,
+        "kernel_names": [
+          "_ZN2at6native53_GLOBAL__N__87a90936_20_layer_norm_kernel_cu_3ff0b71f28vectorized_layer_norm_kernelIN3c104HalfEfLb0EEEviT0_PKT_S8_S8_PS5_S9_PS6_",
+          "_ZN2at6native29vectorized_elementwise_kernelILi4ENS0_11FillFunctorIN3c104HalfEEESt5arrayIPcLy1EEEEviT0_T1_",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel"
+        ]
+      },
+      {
+        "median_ms": 0.7295680046081543,
+        "q1_ms": 0.72639200091362,
+        "q3_ms": 0.730679988861084,
+        "iqr_ms": 0.004287987947463989,
+        "min_ms": 0.7180799841880798,
+        "max_ms": 0.9910719990730286,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2790,
+          "mem_clock_mhz": 8251,
+          "temp_c": 50,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 54,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 16,
+        "us_per_image": 45.598000288009644,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 2.5884000062942505,
+        "q1_ms": 2.584984004497528,
+        "q3_ms": 2.590839982032776,
+        "iqr_ms": 0.005855977535247803,
+        "min_ms": 2.5007998943328857,
+        "max_ms": 2.941375970840454,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 54,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 58,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 64,
+        "us_per_image": 40.443750098347664,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 86.32857513427734,
+        "q1_ms": 85.7567024230957,
+        "q3_ms": 86.8055419921875,
+        "iqr_ms": 1.0488395690917969,
+        "min_ms": 83.58537292480469,
+        "max_ms": 88.35606384277344,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 58,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2580,
+          "mem_clock_mhz": 8251,
+          "temp_c": 66,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 2048,
+        "us_per_image": 42.15262457728386,
+        "kernels_per_block": null,
+        "kernel_names": null
+      }
+    ],
+    [
+      {
+        "median_ms": 0.33484798669815063,
+        "q1_ms": 0.3296080008149147,
+        "q3_ms": 0.34380799531936646,
+        "iqr_ms": 0.014199994504451752,
+        "min_ms": 0.3256320059299469,
+        "max_ms": 0.44646400213241577,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 435,
+          "mem_clock_mhz": 5001,
+          "temp_c": 52,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 56,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 1,
+        "us_per_image": 334.84798669815063,
+        "kernels_per_block": 6,
+        "kernel_names": [
+          "_ZN2at6native53_GLOBAL__N__87a90936_20_layer_norm_kernel_cu_3ff0b71f28vectorized_layer_norm_kernelIN3c104HalfEfLb0EEEviT0_PKT_S8_S8_PS5_S9_PS6_",
+          "_ZN2at6native29vectorized_elementwise_kernelILi4ENS0_11FillFunctorIN3c104HalfEEESt5arrayIPcLy1EEEEviT0_T1_",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel"
+        ]
+      },
+      {
+        "median_ms": 0.7295680046081543,
+        "q1_ms": 0.7266640067100525,
+        "q3_ms": 0.7309679836034775,
+        "iqr_ms": 0.004303976893424988,
+        "min_ms": 0.7204480171203613,
+        "max_ms": 0.9192320108413696,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 53,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 56,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 16,
+        "us_per_image": 45.598000288009644,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 2.5924479961395264,
+        "q1_ms": 2.5645280480384827,
+        "q3_ms": 2.629576027393341,
+        "iqr_ms": 0.0650479793548584,
+        "min_ms": 2.5052480697631836,
+        "max_ms": 2.8261120319366455,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 56,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2700,
+          "mem_clock_mhz": 8251,
+          "temp_c": 64,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 64,
+        "us_per_image": 40.5069999396801,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 86.39848327636719,
+        "q1_ms": 85.98738479614258,
+        "q3_ms": 86.88567352294922,
+        "iqr_ms": 0.8982887268066406,
+        "min_ms": 83.9985580444336,
+        "max_ms": 88.51356506347656,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2700,
+          "mem_clock_mhz": 8251,
+          "temp_c": 64,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2550,
+          "mem_clock_mhz": 8251,
+          "temp_c": 67,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 2048,
+        "us_per_image": 42.186759412288666,
+        "kernels_per_block": null,
+        "kernel_names": null
+      }
+    ],
+    [
+      {
+        "median_ms": 0.3333120048046112,
+        "q1_ms": 0.32972800731658936,
+        "q3_ms": 0.3386879935860634,
+        "iqr_ms": 0.00895998626947403,
+        "min_ms": 0.32051199674606323,
+        "max_ms": 0.3983359932899475,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 55,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 55,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 1,
+        "us_per_image": 333.3120048046112,
+        "kernels_per_block": 6,
+        "kernel_names": [
+          "_ZN2at6native53_GLOBAL__N__87a90936_20_layer_norm_kernel_cu_3ff0b71f28vectorized_layer_norm_kernelIN3c104HalfEfLb0EEEviT0_PKT_S8_S8_PS5_S9_PS6_",
+          "_ZN2at6native29vectorized_elementwise_kernelILi4ENS0_11FillFunctorIN3c104HalfEEESt5arrayIPcLy1EEEEviT0_T1_",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel",
+          "nca_step_kernel"
+        ]
+      },
+      {
+        "median_ms": 0.7290880084037781,
+        "q1_ms": 0.726543977856636,
+        "q3_ms": 0.7304319739341736,
+        "iqr_ms": 0.0038879960775375366,
+        "min_ms": 0.7143359780311584,
+        "max_ms": 1.1218880414962769,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 54,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 57,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 16,
+        "us_per_image": 45.56800052523613,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 2.59552001953125,
+        "q1_ms": 2.5858001112937927,
+        "q3_ms": 2.6286880373954773,
+        "iqr_ms": 0.04288792610168457,
+        "min_ms": 2.575551986694336,
+        "max_ms": 3.1098239421844482,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2775,
+          "mem_clock_mhz": 8251,
+          "temp_c": 57,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2625,
+          "mem_clock_mhz": 8251,
+          "temp_c": 65,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 64,
+        "us_per_image": 40.55500030517578,
+        "kernels_per_block": null,
+        "kernel_names": null
+      },
+      {
+        "median_ms": 86.46710205078125,
+        "q1_ms": 86.12396812438965,
+        "q3_ms": 86.87010383605957,
+        "iqr_ms": 0.7461357116699219,
+        "min_ms": 84.82473754882812,
+        "max_ms": 88.30790710449219,
+        "iters": 100,
+        "warmup": 20,
+        "gpu_before": {
+          "sm_clock_mhz": 2625,
+          "mem_clock_mhz": 8251,
+          "temp_c": 65,
+          "power_w": null
+        },
+        "gpu_after": {
+          "sm_clock_mhz": 2535,
+          "mem_clock_mhz": 8251,
+          "temp_c": 68,
+          "power_w": null
+        },
+        "dtype": "fp16",
+        "batch": 2048,
+        "us_per_image": 42.22026467323303,
+        "kernels_per_block": null,
+        "kernel_names": null
+      }
+    ]
+  ],
+  "kernel_names": [
+    "_ZN2at6native53_GLOBAL__N__87a90936_20_layer_norm_kernel_cu_3ff0b71f28vectorized_layer_norm_kernelIN3c104HalfEfLb0EEEviT0_PKT_S8_S8_PS5_S9_PS6_",
+    "_ZN2at6native29vectorized_elementwise_kernelILi4ENS0_11FillFunctorIN3c104HalfEEESt5arrayIPcLy1EEEEviT0_T1_",
+    "nca_step_kernel",
+    "nca_step_kernel",
+    "nca_step_kernel",
+    "nca_step_kernel"
+  ]
+}

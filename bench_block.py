@@ -1,7 +1,7 @@
-"""M1 timing: unfused reference NCA block, fp32 and fp16, B in {1,16,64,largest}.
+"""Timing of one NCA block: --impl ref (M1, fp32+fp16) or --impl fused (M2, fp16), B in {1,16,64,largest}.
 
-One command:  python bench_block.py      (spawns 3 independent process launches, merges them)
-Writes results/m1_timing.json
+One command:  python bench_block.py [--impl fused]   (spawns 3 independent process launches, merges them)
+Writes results/m1_timing.json (ref) or results/m2_timing.json (fused)
 """
 import argparse, json, subprocess, sys, statistics
 import torch
@@ -11,10 +11,16 @@ from reference import load_block
 DTYPES = {"fp32": torch.float32, "fp16": torch.float16}
 
 
-def worker(batches):
+def worker(batches, impl):
     out = []
     for name, dt in DTYPES.items():
-        blk = load_block(0, dtype=dt)
+        if impl == "fused":
+            if name != "fp16":
+                continue
+            from fused import load_fused
+            blk = load_fused(0)
+        else:
+            blk = load_block(0, dtype=dt)
         for B in batches:
             x = torch.randn(B, 197, 192, device="cuda", dtype=dt)
             with torch.no_grad():
@@ -31,23 +37,26 @@ def worker(batches):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--worker", type=str, default=None)
+    ap.add_argument("--impl", default="ref", choices=["ref", "fused"])
     ap.add_argument("--launches", type=int, default=3)
     a = ap.parse_args()
     if a.worker:
-        print("RESULT" + json.dumps(worker(json.loads(a.worker))))
+        print("RESULT" + json.dumps(worker(json.loads(a.worker), a.impl)))
         return
+    batches = [1, 16, 64, 2048] if a.impl == "fused" else None   # same batches as the M1 reference run
     blk = load_block(0)
     def probe(B):
         with torch.no_grad():
             blk(torch.randn(B, 197, 192, device="cuda"))
-    big = largest_batch(probe)          # fp32 is the memory-hungry case
-    batches = [1, 16, 64] + ([big] if big and big > 64 else [])
+    if batches is None:
+        big = largest_batch(probe)          # fp32 is the memory-hungry case
+        batches = [1, 16, 64] + ([big] if big and big > 64 else [])
     del blk; torch.cuda.empty_cache()
     print("batches", batches, flush=True)
     launches = []
     for i in range(a.launches):
         print(f"launch {i}", flush=True)
-        p = subprocess.run([sys.executable, __file__, "--worker", json.dumps(batches)],
+        p = subprocess.run([sys.executable, __file__, "--impl", a.impl, "--worker", json.dumps(batches)],
                            capture_output=True, text=True)
         sys.stdout.write("".join(l + "\n" for l in p.stdout.splitlines() if not l.startswith("RESULT")))
         if p.returncode: sys.stderr.write(p.stderr[-2000:]); sys.exit(1)
@@ -60,7 +69,7 @@ def main():
                             us_per_image=statistics.median(meds) * 1e3 / rec["batch"],
                             kernels_per_block=rec["kernels_per_block"]))
     p = torch.cuda.get_device_properties(0)
-    save("m1_timing.json", dict(gpu=p.name, L2_bytes=p.L2_cache_size, smem_optin_bytes=p.shared_memory_per_block_optin, sms=p.multi_processor_count,
+    save("m1_timing.json" if a.impl == "ref" else "m2_timing.json", dict(gpu=p.name, L2_bytes=p.L2_cache_size, smem_optin_bytes=p.shared_memory_per_block_optin, sms=p.multi_processor_count,
                                 batches=batches, summary=summary, launches=launches,
                                 kernel_names=launches[0][0]["kernel_names"]))
     print(json.dumps(summary, indent=1))

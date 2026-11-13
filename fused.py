@@ -21,8 +21,9 @@ D_C, HID_C = tl.constexpr(D), tl.constexpr(HID)   # globals visible inside @trit
 
 
 @triton.autotune(
-    configs=[triton.Config({"BM": bm}, num_warps=w, num_stages=s)
-             for bm in (16, 32, 64) for w in (4, 8) for s in (1, 2)],
+    # h accumulators take BM*384*4 bytes of registers: keep BM*1536/(32*warps*4) <= ~100 regs/thread
+    configs=[triton.Config({"BM": bm}, num_warps=w, num_stages=1)
+             for bm, w in ((16, 4), (16, 8), (32, 4), (32, 8), (64, 8))],
     key=["R"],
 )
 @triton.jit
@@ -40,22 +41,35 @@ def nca_step_kernel(x_ptr, out_ptr, init_ptr, wp_ptr, w1_ptr, b1_ptr, w2_ptr, b2
     h0 = tl.zeros([BM, 128], tl.float32)
     h1 = tl.zeros([BM, 128], tl.float32)
     h2 = tl.zeros([BM, 128], tl.float32)
-    for f in tl.static_range(3):                              # perception filter: sobel_x, sobel_y, identity
-        for cc in tl.static_range(3):                         # 64-channel chunk
-            ch = cc * 64 + c64
-            p = tl.zeros([BM, 64], tl.float32)
-            for t in tl.static_range(9):                      # 3x3 taps (zero padding via mask)
-                dy = t // 3 - 1
-                dx = t % 3 - 1
-                ok = rmask & (y + dy >= 0) & (y + dy < H) & (xx + dx >= 0) & (xx + dx < W)
-                xs = tl.load(x_ptr + (rows + dy * W + dx)[:, None] * D_C + ch[None, :], mask=ok[:, None], other=0.0)
-                w = tl.load(wp_ptr + (f * D_C + ch) * 9 + t).to(tl.float32)
-                p += xs.to(tl.float32) * w[None, :]
-            pa = p.to(tl.float16)                             # perception chunk [BM, 64] stays in registers
-            kk = (f * D_C + cc * 64 + c64)[:, None] * HID_C       # rows of W1^T for these 64 inputs
-            h0 = tl.dot(pa, tl.load(w1_ptr + kk + (0 * 128 + k128)[None, :]), h0)
-            h1 = tl.dot(pa, tl.load(w1_ptr + kk + (1 * 128 + k128)[None, :]), h1)
-            h2 = tl.dot(pa, tl.load(w1_ptr + kk + (2 * 128 + k128)[None, :]), h2)
+    for cc in tl.static_range(3):                             # 64-channel chunk
+        ch = cc * 64 + c64
+        p0 = tl.zeros([BM, 64], tl.float32)                   # perception, filter 0 (sobel_x-ordered rows)
+        p1 = tl.zeros([BM, 64], tl.float32)
+        p2 = tl.zeros([BM, 64], tl.float32)
+        for t in tl.static_range(9):                          # 3x3 taps (zero padding via mask); each tap loaded once
+            dy = t // 3 - 1
+            dx = t % 3 - 1
+            ok = rmask & (y + dy >= 0) & (y + dy < H) & (xx + dx >= 0) & (xx + dx < W)
+            xs = tl.load(x_ptr + (rows + dy * W + dx)[:, None] * D_C + ch[None, :], mask=ok[:, None], other=0.0).to(tl.float32)
+            p0 += xs * tl.load(wp_ptr + (0 * D_C + ch) * 9 + t).to(tl.float32)[None, :]
+            p1 += xs * tl.load(wp_ptr + (1 * D_C + ch) * 9 + t).to(tl.float32)[None, :]
+            p2 += xs * tl.load(wp_ptr + (2 * D_C + ch) * 9 + t).to(tl.float32)[None, :]
+        # perception chunks stay in registers and feed the first matmul directly (K = 3 filters x 64 channels)
+        kk0 = (0 * D_C + cc * 64 + c64)[:, None] * HID_C
+        kk1 = (1 * D_C + cc * 64 + c64)[:, None] * HID_C
+        kk2 = (2 * D_C + cc * 64 + c64)[:, None] * HID_C
+        pa = p0.to(tl.float16)
+        h0 = tl.dot(pa, tl.load(w1_ptr + kk0 + (0 * 128 + k128)[None, :]), h0)
+        h1 = tl.dot(pa, tl.load(w1_ptr + kk0 + (1 * 128 + k128)[None, :]), h1)
+        h2 = tl.dot(pa, tl.load(w1_ptr + kk0 + (2 * 128 + k128)[None, :]), h2)
+        pa = p1.to(tl.float16)
+        h0 = tl.dot(pa, tl.load(w1_ptr + kk1 + (0 * 128 + k128)[None, :]), h0)
+        h1 = tl.dot(pa, tl.load(w1_ptr + kk1 + (1 * 128 + k128)[None, :]), h1)
+        h2 = tl.dot(pa, tl.load(w1_ptr + kk1 + (2 * 128 + k128)[None, :]), h2)
+        pa = p2.to(tl.float16)
+        h0 = tl.dot(pa, tl.load(w1_ptr + kk2 + (0 * 128 + k128)[None, :]), h0)
+        h1 = tl.dot(pa, tl.load(w1_ptr + kk2 + (1 * 128 + k128)[None, :]), h1)
+        h2 = tl.dot(pa, tl.load(w1_ptr + kk2 + (2 * 128 + k128)[None, :]), h2)
 
     h0 = tl.maximum(h0 + tl.load(b1_ptr + 0 * 128 + k128)[None, :].to(tl.float32), 0.0).to(tl.float16)
     h1 = tl.maximum(h1 + tl.load(b1_ptr + 1 * 128 + k128)[None, :].to(tl.float32), 0.0).to(tl.float16)

@@ -1,0 +1,65 @@
+{
+  "rows": [
+    {
+      "batch": 1,
+      "ref_fp16_ms": 1.5813760161399841,
+      "ref_fp32_ms": 1.341439962387085,
+      "fused_ms": 0.33484798669815063,
+      "speedup_vs_fp16": 4.7226684315277625,
+      "speedup_vs_fp32": 4.006116254765864,
+      "ref_fp16_dram_mb_per_image": 0.642432,
+      "fused_dram_mb_per_image": 0.27712,
+      "dram_reduction": 2.31824480369515,
+      "R_fused": 0.3681972789115646,
+      "R_ref_fp16": 0.8535714285714285,
+      "fused_tflops": 1.4052661108701205,
+      "fused_kernels_per_block": 6
+    },
+    {
+      "batch": 16,
+      "ref_fp16_ms": 1.5108799934387207,
+      "ref_fp32_ms": 2.496847987174988,
+      "fused_ms": 0.7295680046081543,
+      "speedup_vs_fp16": 2.070924141266589,
+      "speedup_vs_fp32": 3.422364976813953,
+      "ref_fp16_dram_mb_per_image": 6.038864,
+      "fused_dram_mb_per_image": 0.080728,
+      "dram_reduction": 74.80507382816371,
+      "R_fused": 0.4290391156462585,
+      "R_ref_fp16": 32.09430272108843,
+      "fused_tflops": 10.31954307267582,
+      "fused_kernels_per_block": 6
+    },
+    {
+      "batch": 64,
+      "ref_fp16_ms": 4.5714240074157715,
+      "ref_fp32_ms": 12.588047981262207,
+      "fused_ms": 2.5924479961395264,
+      "speedup_vs_fp16": 1.7633618935551199,
+      "speedup_vs_fp32": 4.855660749996666,
+      "ref_fp16_dram_mb_per_image": 10.887228,
+      "fused_dram_mb_per_image": 0.808826,
+      "dram_reduction": 13.460531684194128,
+      "R_fused": 5.05718537414966,
+      "R_ref_fp16": 68.07240396158464,
+      "fused_tflops": 11.616523778623634,
+      "fused_kernels_per_block": 6
+    },
+    {
+      "batch": 2048,
+      "ref_fp16_ms": 249.17715454101562,
+      "ref_fp32_ms": 334.6734619140625,
+      "fused_ms": 86.39848327636719,
+      "speedup_vs_fp16": 2.88404547269609,
+      "speedup_vs_fp32": 3.873603438656737,
+      "ref_fp16_dram_mb_per_image": 6.550450125,
+      "fused_dram_mb_per_image": 1.47972325,
+      "dram_reduction": 4.426807597299022,
+      "R_fused": 9.811057073901685,
+      "R_ref_fp16": 43.431661992282294,
+      "fused_tflops": 11.15398609789716,
+      "fused_kernels_per_block": 6
+    }
+  ],
+  "note": "fused B=1/16 DRAM bytes are lower bounds: the whole batch state stays in the 24 MB L2 and dirty output lines are not written back inside the profiled range. B>=64 (and especially 2048) is the reliable regime."
+}

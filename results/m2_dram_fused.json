@@ -1,0 +1,123 @@
+[
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 1,
+    "protocol": "range",
+    "measured": true,
+    "kernels": null,
+    "dram_read_bytes_per_image": 277120.0,
+    "dram_write_bytes_per_image": 0.0,
+    "dram_bytes_per_image": 277120.0,
+    "min_bytes_per_image": 752640.0,
+    "R": 0.3681972789115646,
+    "kernel_names": null
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 1,
+    "protocol": "app",
+    "measured": true,
+    "kernels": 6,
+    "dram_read_bytes_per_image": 1218432.0,
+    "dram_write_bytes_per_image": 512.0,
+    "dram_bytes_per_image": 1218944.0,
+    "min_bytes_per_image": 752640.0,
+    "R": 1.6195578231292518,
+    "kernel_names": [
+      "void at::native::<unnamed>::vectorized_layer_norm_kernel<c10::Half, float, (bool)0>(int, T2, const T1 *, const T1 *, const T1 *, T2 *, T2 *, T1 *)",
+      "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<c10::Half>, std::array<char *, (unsigned long long)1>>(int, T2, T3)",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel"
+    ]
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 16,
+    "protocol": "range",
+    "measured": true,
+    "kernels": null,
+    "dram_read_bytes_per_image": 74296.0,
+    "dram_write_bytes_per_image": 6432.0,
+    "dram_bytes_per_image": 80728.0,
+    "min_bytes_per_image": 188160.0,
+    "R": 0.4290391156462585,
+    "kernel_names": null
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 16,
+    "protocol": "app",
+    "measured": true,
+    "kernels": 7,
+    "dram_read_bytes_per_image": 131336.0,
+    "dram_write_bytes_per_image": 872.0,
+    "dram_bytes_per_image": 132208.0,
+    "min_bytes_per_image": 188160.0,
+    "R": 0.7026360544217687,
+    "kernel_names": [
+      "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 10)]::operator ()() const::[lambda(c10::Half) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+      "void at::native::<unnamed>::vectorized_layer_norm_kernel<c10::Half, float, (bool)0>(int, T2, const T1 *, const T1 *, const T1 *, T2 *, T2 *, T1 *)",
+      "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<c10::Half>, std::array<char *, (unsigned long long)1>>(int, T2, T3)",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel"
+    ]
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 16,
+    "protocol": "flush",
+    "measured": true,
+    "kernels": 7,
+    "dram_read_bytes_per_image": 757984.0,
+    "dram_write_bytes_per_image": 4334704.0,
+    "dram_bytes_per_image": 5092688.0,
+    "min_bytes_per_image": 188160.0,
+    "R": 27.065731292517007,
+    "kernel_names": [
+      "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 10)]::operator ()() const::[lambda(c10::Half) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+      "void at::native::<unnamed>::vectorized_layer_norm_kernel<c10::Half, float, (bool)0>(int, T2, const T1 *, const T1 *, const T1 *, T2 *, T2 *, T1 *)",
+      "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<c10::Half>, std::array<char *, (unsigned long long)1>>(int, T2, T3)",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel",
+      "nca_step_kernel"
+    ]
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 64,
+    "protocol": "range",
+    "measured": true,
+    "kernels": null,
+    "dram_read_bytes_per_image": 66546.0,
+    "dram_write_bytes_per_image": 742280.0,
+    "dram_bytes_per_image": 808826.0,
+    "min_bytes_per_image": 159936.0,
+    "R": 5.05718537414966,
+    "kernel_names": null
+  },
+  {
+    "impl": "fused",
+    "dtype": "fp16",
+    "batch": 2048,
+    "protocol": "range",
+    "measured": true,
+    "kernels": null,
+    "dram_read_bytes_per_image": 528519.625,
+    "dram_write_bytes_per_image": 951203.625,
+    "dram_bytes_per_image": 1479723.25,
+    "min_bytes_per_image": 150822.0,
+    "R": 9.811057073901685,
+    "kernel_names": null
+  }
+]
