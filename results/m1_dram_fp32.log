@@ -1,0 +1,6 @@
+ref fp32 B=    1 range  R=1.46  DRAM/img=   2.198 MB (rd 0.191 wr 2.007)  min=1.505
+ref fp32 B=    1 app    R=2.62  DRAM/img=   3.942 MB (rd 1.503 wr 2.439)  min=1.505
+ref fp32 B=   16 range  R=55.81  DRAM/img=  21.003 MB (rd 4.823 wr 16.180)  min=0.376
+ref fp32 B=   16 app    R=51.56  DRAM/img=  19.404 MB (rd 5.007 wr 14.397)  min=0.376
+ref fp32 B=   16 flush  R=38.95  DRAM/img=  14.659 MB (rd 13.233 wr 1.427)  min=0.376
+ref fp32 B=   64 range  R=50.54  DRAM/img=  16.166 MB (rd 7.614 wr 8.552)  min=0.320

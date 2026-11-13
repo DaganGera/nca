@@ -26,7 +26,9 @@ with torch.no_grad():
     for _ in range(a.warmup):
         fwd(x)
     torch.cuda.synchronize()
-    torch.cuda.nvtx.range_push("nca_block")
+    torch.cuda.profiler.start()          # range for --replay-mode range (--profile-from-start off)
+    torch.cuda.nvtx.range_push("nca_block")   # range for NVTX-filtered application replay
     fwd(x)
     torch.cuda.synchronize()
     torch.cuda.nvtx.range_pop()
+    torch.cuda.profiler.stop()

@@ -1,0 +1,2 @@
+ref fp32 B=    1 primary   kernels= 36 DRAM/img=   3.966 MB  min=1.505 MB  R=2.63
+ref fp32 B=   16 primary   kernels= 37 DRAM/img=  19.377 MB  min=0.376 MB  R=51.49

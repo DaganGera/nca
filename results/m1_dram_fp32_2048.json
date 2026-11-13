@@ -1,0 +1,16 @@
+[
+  {
+    "impl": "ref",
+    "dtype": "fp32",
+    "batch": 2048,
+    "protocol": "range",
+    "measured": true,
+    "kernels": null,
+    "dram_read_bytes_per_image": 14205655.0,
+    "dram_write_bytes_per_image": 13417793.375,
+    "dram_bytes_per_image": 27623448.375,
+    "min_bytes_per_image": 301644.0,
+    "R": 91.57632299996021,
+    "kernel_names": null
+  }
+]

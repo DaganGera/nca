@@ -102,3 +102,22 @@ _(none yet)_
 3. **GPU is an RTX 4060 with 24 MB L2** (queried at M1, 24 SMs, 99 KB opt-in shared memory per block). H2 refers to this L2 size.
 4. **"Largest batch that fits"** is the largest power of two whose peak allocation is below 70% of VRAM (Windows WDDM can silently spill to system RAM instead of raising OOM, which would invalidate timing). Result: 2048.
 5. **M2 correctness bar.** Strict pre-registered bar (fused max-abs AND mean-abs error vs fp32 reference both <= fp16 reference's): **22 of 24 cases pass, 2 fail** (block 0 on 7x7 random: 3.53e-3 vs 3.14e-3; block 0 real CIFAR-100: 6.42e-3 vs 5.78e-3; ratios 1.12x and 1.11x; mean-abs error is lower than the fp16 reference in all 24). The strict result is reported as is. *Post-hoc* secondary criterion (added after seeing these numbers, so it is labelled exploratory): fused max-abs <= 1.25x the fp16 reference's. All 24 pass it. It does not replace the strict result.
+
+### Amendment 2 (2026-11-14): ncu protocol, written after the B=16 fp32 smoke test, before the B=64 gate was measured
+
+Section 1 called the cache-flushing protocol (`--cache-control all`, kernel replay) an *upper bound* on DRAM traffic. A smoke test (reference, fp32, B=16) showed that is wrong:
+
+| protocol | read / image | write / image | total |
+|---|---|---|---|
+| primary: application replay, no flush (2 repeats) | 5.01 / 5.01 MB | 14.40 / 14.39 MB | 19.42 / 19.40 MB |
+| secondary: kernel replay, L2 flushed per kernel | 13.24 MB | 1.44 MB | 14.69 MB |
+
+The flushed protocol over-counts reads (every input starts cold) and under-counts writes (dirty lines are still in L2 when the kernel ends and are written back outside the measured window). Its total is therefore neither an upper nor a lower bound. **The primary protocol is the only one used for H1-H4 and for the GO/NO-GO gate**; the secondary is reported for B=64 only, as a sensitivity check. Residual caveat on the primary protocol: dirty lines still resident in L2 when the profiled range ends are not counted as writes (at most the 24 MB L2 capacity, i.e. at most 24 MB / B per image).
+
+### Amendment 3 (2026-11-14): replay mode for the main DRAM protocol; GO/NO-GO 1 recorded
+
+- Application-replay profiling (Amendment 2's "primary") ran in ~4 min at B=1 and B=16 but did not finish at B=64 after 26 min (`ncu.exe` CPU-bound, target process idle; stopped by me, **no result**, recorded as not measured). The cause was not investigated.
+- The **main protocol is therefore range replay** (`--replay-mode range --cache-control none`, the whole block forward as one profiled range, caches not flushed). It returns one aggregate row, so per-kernel counts come from the torch profiler / app replay, not from it.
+- Validation against app replay (fp32 / fp16 total DRAM per image): B=16 range 21.0 / 6.04 MB vs app 19.4 / 5.18 MB (8% / 17% apart, same conclusion). **B=1 disagrees strongly** (fp32 2.20 vs 3.94 MB; fp16 0.64 vs 1.33 MB) because range replay sees weights already in L2 from the preceding warm-up. B=1 results are reported under both protocols and the B=1 traffic ratio is called protocol-sensitive.
+- `min(B, s)` is a **cold-start** floor (weights read from DRAM once). In a steady-state loop the weights (0.6 MB fp16) stay in the 24 MB L2, so R can be below 1 (fp16 B=1 range: 0.85). That is a property of the definition, not an error.
+- **GO/NO-GO 1 (B=64): GO.** R = 50.5 (fp32) and 68.1 (fp16) against a stop threshold of 1.5 and an H1 support threshold of 3. H1 supported, H2 supported (R(1) < R(64) under both protocols). R is not monotone in B (fp16: 68.1 at B=64, 43.4 at B=2048); not investigated, so it is reported but not explained.
