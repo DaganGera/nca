@@ -1,0 +1,7 @@
+void at::native::elementwise_kernel<(int)128, (int)4, void a      30.8 us  DRAM  52.0%  SM  49.4%  tensor   0.0%  warps  62.7%  regs 16  dram    4.21 MB  L2      9.7 MB
+void at::native::<unnamed>::vectorized_layer_norm_kernel<c10     100.7 us  DRAM  12.2%  SM  77.4%  tensor   0.0%  warps  87.4%  regs 30  dram    3.24 MB  L2     10.8 MB
+void at::native::vectorized_elementwise_kernel<(int)4, at::n       9.3 us  DRAM   0.2%  SM  23.6%  tensor   0.0%  warps  77.8%  regs 16  dram    0.00 MB  L2      4.9 MB
+nca_step_kernel                                 1454.9 us  DRAM  26.4%  SM  27.4%  tensor  24.5%  warps  16.9%  regs 255  dram  101.39 MB  L2    800.9 MB
+nca_step_kernel                                 1442.9 us  DRAM  27.4%  SM  27.7%  tensor  25.0%  warps  16.8%  regs 255  dram  104.15 MB  L2    801.1 MB
+nca_step_kernel                                 1454.6 us  DRAM  27.5%  SM  27.5%  tensor  24.7%  warps  16.9%  regs 255  dram  105.51 MB  L2    801.1 MB
+nca_step_kernel                                 1497.9 us  DRAM  38.2%  SM  27.3%  tensor  24.0%  warps  16.8%  regs 255  dram  150.89 MB  L2    860.9 MB
