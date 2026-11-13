@@ -13,6 +13,10 @@ METRICS = "dram__bytes_read.sum,dram__bytes_write.sum,gpu__time_duration.sum"
 PARAMS = 301_056   # per-block parameters (PREREGISTRATION.md section 0)
 
 
+def num(s):
+    return float(s.replace(",", ""))
+
+
 def min_bytes_per_image(B, s, n=196, d=192):
     return 2 * n * d * s + PARAMS * s / B
 
@@ -28,15 +32,15 @@ def run(impl, dtype, B, protocol):
         raise RuntimeError(p.stdout[-1500:] + p.stderr[-1500:])
     lines = p.stdout.splitlines()
     start = next(i for i, l in enumerate(lines) if l.startswith('"ID"'))
-    rows = list(csv.DictReader(io.StringIO("\n".join(lines[start:]))))
-    rd = sum(float(r["dram__bytes_read.sum"]) for r in rows)
-    wr = sum(float(r["dram__bytes_write.sum"]) for r in rows)
+    rows = [r for r in csv.DictReader(io.StringIO("\n".join(lines[start:]))) if r["ID"].isdigit()]  # drop units row
+    rd = sum(num(r["dram__bytes_read.sum"]) for r in rows)
+    wr = sum(num(r["dram__bytes_write.sum"]) for r in rows)
     s = 4 if dtype == "fp32" else 2
     mn = min_bytes_per_image(B, s)
     return dict(impl=impl, dtype=dtype, batch=B, protocol=protocol, kernels=len(rows),
                 dram_read_bytes_per_image=rd / B, dram_write_bytes_per_image=wr / B,
                 dram_bytes_per_image=(rd + wr) / B, min_bytes_per_image=mn, R=(rd + wr) / B / mn,
-                gpu_time_us_sum=sum(float(r["gpu__time_duration.sum"]) for r in rows) / 1e3,
+                gpu_time_us_sum=sum(num(r["gpu__time_duration.sum"]) for r in rows) / 1e3,
                 kernel_names=[r["Kernel Name"] for r in rows])
 
 

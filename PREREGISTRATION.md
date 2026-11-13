@@ -94,3 +94,11 @@ Hand-derived expectation (DeiT-Tiny width D=192): attention mixer FLOPs per toke
 ## Amendments
 
 _(none yet)_
+
+### Amendment 1 (2026-11-14): corrections found while building M2 and M1. No result had influenced any threshold.
+
+1. **Perception channel layout (error in section 0).** Section 0 says the perception output index is `f*D + c`. That is wrong. `F.conv2d(..., groups=D)` assigns output channel `j` to input channel `j // 3`, so the index is `3c + m` and trained row `j` acts on channel `j//3`. Consequences: (a) the kernel permutes weight rows and W1 inputs once on the host (a relabelling; verified numerically by `test_fused.py`); (b) the original filter initialisation (`cat` of three tiled filters) therefore gives input channel `c` three copies of *one* filter type at init (channels 0-63 sobel_x, 64-127 sobel_y, 128-191 identity), not sobel_x/sobel_y/identity on every channel. This is a property of the original model code, not of this project; it is reported, not changed.
+2. **NVML energy/power unsupported.** On this GPU `nvmlDeviceGetTotalEnergyConsumption` and `nvmlDeviceGetPowerUsage` return NotSupported. Per section 1, board energy is "not measured". The M5 energy model will be labelled as an assumption (Horowitz figures) with no measured counterpart.
+3. **GPU is an RTX 4060 with 24 MB L2** (queried at M1, 24 SMs, 99 KB opt-in shared memory per block). H2 refers to this L2 size.
+4. **"Largest batch that fits"** is the largest power of two whose peak allocation is below 70% of VRAM (Windows WDDM can silently spill to system RAM instead of raising OOM, which would invalidate timing). Result: 2048.
+5. **M2 correctness bar.** Strict pre-registered bar (fused max-abs AND mean-abs error vs fp32 reference both <= fp16 reference's): **22 of 24 cases pass, 2 fail** (block 0 on 7x7 random: 3.53e-3 vs 3.14e-3; block 0 real CIFAR-100: 6.42e-3 vs 5.78e-3; ratios 1.12x and 1.11x; mean-abs error is lower than the fp16 reference in all 24). The strict result is reported as is. *Post-hoc* secondary criterion (added after seeing these numbers, so it is labelled exploratory): fused max-abs <= 1.25x the fp16 reference's. All 24 pass it. It does not replace the strict result.
